@@ -13,7 +13,7 @@ SRCS=$(wildcard src/*.java)
 
 vectorview.jar vectorview.jar.pack.gz: $(SRCS) manifest.txt NetLogo.jar VectorGraphics2D-0.9.3.jar 
 	mkdir -p classes
-	$(JAVA_HOME)/bin/javac -g -encoding us-ascii -source 1.6 -target 1.6 -classpath NetLogo.jar$(COLON)VectorGraphics2D-0.9.3.jar -d classes $(SRCS)
+	$(JAVA_HOME)/bin/javac -g -encoding us-ascii -source 1.8 -target 1.8 -classpath NetLogo.jar$(COLON)VectorGraphics2D-0.9.3.jar -d classes $(SRCS)
 	jar cmf manifest.txt vectorview.jar -C classes .
 	pack200 --modification-time=latest --effort=9 --strip-debug --no-keep-file-order --unknown-attribute=strip vectorview.jar.pack.gz vectorview.jar
 
