@@ -11,29 +11,32 @@ import java.util.Locale;
 
 import org.nlogo.api.Argument;
 import org.nlogo.api.Context;
-import org.nlogo.api.DefaultCommand;
 import org.nlogo.api.ExtensionException;
 import org.nlogo.api.LogoException;
-import org.nlogo.api.Syntax;
 import org.nlogo.api.ViewSettings;
 import org.nlogo.api.World;
+import org.nlogo.api.WorldWithWorldRenderable;
 import org.nlogo.app.App;
+import org.nlogo.core.Syntax;
+import org.nlogo.core.SyntaxJ;
 import org.nlogo.nvm.ExtensionContext;
 
 import de.erichseifert.vectorgraphics2d.EPSGraphics2D;
 import de.erichseifert.vectorgraphics2d.PDFGraphics2D;
 import de.erichseifert.vectorgraphics2d.SVGGraphics2D;
 
+
+
 /**
  * @author Ahmad Esmaeili 
  *
- * Created on Dec 9, 2015
+ * Created on Feb 22, 2021
  */
 
 
-public class ExportVector extends DefaultCommand {
+public class ExportVector implements org.nlogo.api.Command {
 
-	@Override
+	
 	public void perform(Argument[] params, Context context)
 			throws ExtensionException, LogoException {
 
@@ -62,7 +65,7 @@ public class ExportVector extends DefaultCommand {
 			final BufferedImage bi = ((ExtensionContext) context).workspace()
 					.exportView();
 			final World w = ((ExtensionContext) context).workspace().world();
-			ViewSettings vs = App.app().workspace().view;
+			ViewSettings vs = App.app().workspace().view();
 
 			Graphics2D gVector = null;
 
@@ -98,7 +101,7 @@ public class ExportVector extends DefaultCommand {
 					RenderingHints.VALUE_STROKE_PURE);
 			gVector.setTransform(AffineTransform.getScaleInstance(
 					params[1].getIntValue(), params[1].getIntValue()));
-			org.nlogo.render.Renderer r = new org.nlogo.render.Renderer(w);
+			org.nlogo.render.Renderer r = new org.nlogo.render.Renderer((WorldWithWorldRenderable) w);
 			r.exportView(gVector, vs);
 			try {
 				if (vectorFormat.equals("eps")) {
@@ -126,7 +129,7 @@ public class ExportVector extends DefaultCommand {
 	}
 
 	public Syntax getSyntax() {
-		return Syntax.commandSyntax(new int[] { Syntax.StringType(),
+		return SyntaxJ.commandSyntax(new int[] { Syntax.StringType(),
 				Syntax.NumberType(), Syntax.StringType() });
 
 	}
